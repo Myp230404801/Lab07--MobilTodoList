@@ -1,9 +1,9 @@
 # Yapılacaklar Listesi Uygulaması (TodoApp)
 
-Öğrenci Adı: Mehmet Yiğit Polat
-Öğrenci No: 230404801
-Ders: Android Uygulama Programlama
-Tarih: 11/11/2025  
+Öğrenci Adı: Mehmet Yiğit Polat *
+Öğrenci No: 230404801 * 
+Ders: Android Uygulama Programlama *
+Tarih: 11/11/2025 *
 
 ## Proje Açıklaması
 Bu proje, React Native kullanılarak geliştirilmiş interaktif bir "Yapılacaklar Listesi" uygulamasıdır.  
