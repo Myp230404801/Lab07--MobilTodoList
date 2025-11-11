@@ -1,20 +1,140 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// App.js
+
+import { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+import TodoItem from './components/TodoItem';
 
 export default function App() {
+  // Metin girdisi
+  const [enteredTaskText, setEnteredTaskText] = useState('');
+
+  // Görev listesi
+  const [tasks, setTasks] = useState([]);
+
+  // Kullanıcı text input'a yazdıkça tetiklenir
+  function taskInputHandler(enteredText) {
+    setEnteredTaskText(enteredText);
+  }
+
+  // Yeni görev ekler
+  function addTaskHandler() {
+    if (enteredTaskText.trim().length === 0) {
+      return;
+    }
+
+    setTasks((currentTasks) => [
+      ...currentTasks,
+      { id: Math.random().toString(), text: enteredTaskText },
+    ]);
+
+    setEnteredTaskText('');
+    Keyboard.dismiss(); // klavye kapatılır
+  }
+
+  // Görev silme
+  function deleteTaskHandler(id) {
+    setTasks((currentTasks) => {
+      return currentTasks.filter((task) => task.id !== id);
+    });
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.appContainer}>
+      <KeyboardAvoidingView
+        style={styles.contentContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <Text style={styles.title}>Yapılacaklar Listem</Text>
+
+        {/* Girdi Alanı */}
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Yeni bir görev ekle..."
+            onChangeText={taskInputHandler}
+            value={enteredTaskText}
+          />
+          <Button title="Ekle" onPress={addTaskHandler} />
+        </View>
+
+        {/* Liste Alanı */}
+        <View style={styles.listContainer}>
+          <FlatList
+            data={tasks}
+            renderItem={({ item }) => (
+              <TodoItem
+                id={item.id}
+                text={item.text}
+                onDelete={deleteTaskHandler}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>
+                Henüz görev yok. Bir tane ekle!
+              </Text>
+            }
+          />
+        </View>
+
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  appContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f0f2f5',
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 20,
+    paddingTop: 40,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    paddingBottom: 10,
+  },
+  textInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 6,
+    marginRight: 10,
+    fontSize: 16,
+  },
+  listContainer: {
+    flex: 5,
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
+    color: '#888',
   },
 });
