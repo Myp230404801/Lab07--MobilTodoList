@@ -1,6 +1,6 @@
 # Yapılacaklar Listesi Uygulaması (TodoApp)
 
-Öğrenci Adı:** Mehmet Yiğit Polat
+Öğrenci Adı: Mehmet Yiğit Polat
 Öğrenci No: 230404801
 Ders: Android Uygulama Programlama
 Tarih: 11/11/2025  
